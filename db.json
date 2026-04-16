@@ -1,126 +1,41 @@
 {
-  "burgers": [
+  "bases": [
+    { "id": "1", "name": "Classic Beef Burger", "price": 8.00 },
+    { "id": "2", "name": "Impossible Veggie Burger", "price": 9.50 }
+  ],
+  "steps": [
     {
-      "id": "classic-beef",
-      "title": "Classic Beef Burger",
-      "steps": [
-        {
-          "id": "bun",
-          "type": "multiple-choice",
-          "instruction": "Choose your bun",
-          "options": ["Sesame", "Brioche", "Lettuce Wrap"],
-          "feedback": null
-        },
-        {
-          "id": "protein",
-          "type": "multiple-choice",
-          "instruction": "Choose your protein",
-          "options": ["Beef Patty", "Double Beef", "Plant-Based Patty"],
-          "feedback": null
-        },
-        {
-          "id": "toppings",
-          "type": "multiple-choice",
-          "instruction": "Select your toppings",
-          "options": ["Lettuce", "Tomato", "Pickles", "Onions", "Jalapeños"],
-          "feedback": null
-        },
-        {
-          "id": "sauce",
-          "type": "text",
-          "instruction": "How many sauce servings would you like? (0-5)",
-          "feedback": {
-            "condition": "value > 3",
-            "message": "Too much sauce might overpower the flavor! Click 'Got it' to continue."
-          }
-        },
-        {
-          "id": "extras",
-          "type": "image-selection",
-          "instruction": "Choose an extra to add (click the image)",
-          "imageOptions": [
-            {
-              "url": "https://city-png.b-cdn.net/thumbnail/thumbnail_public/temp/american-yellow-cheese-slices-hd-transparent-png-7017517195023924xh95u9db9.webp?v=2026031820",
-              "label": "Cheese",
-              "value": "Cheese"
-            },
-            {
-              "url": "https://www.rawpixel.com/search/bacon%20png",
-              "label": "Bacon",
-              "value": "Bacon"
-            },
-            {
-              "url": "https://via.placeholder.com/150/FFD700/000000?text=Double+Patty",
-              "label": "Double Patty",
-              "value": "Double Patty"
-            }
-          ],
-          "feedback": null
-        }
+      "id": 1,
+      "title": "Select Bun Type",
+      "type": "button",
+      "options": ["Sesame Bun", "Brioche", "Lettuce Wrap"]
+    },
+    {
+      "id": 2,
+      "title": "Select Cheese",
+      "type": "button",
+      "options": ["Cheddar", "Swiss", "No Cheese"]
+    },
+    {
+      "id": 3,
+      "title": "Secret Sauce Quantity",
+      "type": "text",
+      "prompt": "Enter how many ounces of sauce you'd like (e.g., 2):"
+    },
+    {
+      "id": 4,
+      "title": "Presentation Style",
+      "type": "image",
+      "options": [
+        { "name": "Dine-in (Plate)", "url": "https://via.placeholder.com/150/0d6efd/ffffff?text=Plate" },
+        { "name": "Takeaway (Box)", "url": "https://via.placeholder.com/150/198754/ffffff?text=Box" }
       ]
     },
-
-
     {
-      "id": "grilled-chicken",
-      "title": "Grilled Chicken Burger",
-      "steps": [
-        {
-          "id": "bun",
-          "type": "multiple-choice",
-          "instruction": "Choose your bun",
-          "options": ["Sesame", "Brioche", "Lettuce Wrap"],
-          "feedback": null
-        },
-        {
-          "id": "protein",
-          "type": "multiple-choice",
-          "instruction": "Choose your protein",
-          "options": ["Grilled Chicken", "Spicy Chicken", "Plant-Based Chicken"],
-          "feedback": null
-        },
-        {
-          "id": "toppings",
-          "type": "multiple-choice",
-          "instruction": "Select your toppings",
-          "options": ["Lettuce", "Tomato", "Avocado", "Red Onion", "Cucumber"],
-          "feedback": null
-        },
-        {
-          "id": "sauce",
-          "type": "text",
-          "instruction": "How many sauce servings would you like? (0-5)",
-          "feedback": {
-            "condition": "value > 3",
-            "message": "That's a lot of sauce! It might hide the chicken flavor. Click 'Got it' to continue."
-          }
-        },
-
-
-        {
-          "id": "extras",
-          "type": "image-selection",
-          "instruction": "Choose an extra to add (click the image)",
-          "imageOptions": [
-            {
-              "url": "https://via.placeholder.com/150/FFA07A/000000?text=Cheese",
-              "label": "Cheese",
-              "value": "Cheese"
-            },
-            {
-              "url": "https://via.placeholder.com/150/87CEEB/000000?text=Avocado",
-              "label": "Avocado",
-              "value": "Avocado"
-            },
-            {
-              "url": "https://via.placeholder.com/150/FFB6C1/000000?text=Extra+Patty",
-              "label": "Extra Patty",
-              "value": "Extra Patty"
-            }
-          ],
-          "feedback": null
-        }
-      ]
+      "id": 5,
+      "title": "Chef's Feedback",
+      "type": "feedback",
+      "message": "Great choices! Our chef is preparing your custom burger now."
     }
   ]
 }
