@@ -3,74 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON Actions Test</title>
+    <title>Fresh Bites | Build Your Burger</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="src/css/appstyle.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 </head>
 <body>
-    <h1>Testing JSON Actions</h1>
-    <button onclick="createJSON()">Create JSON</button>
-    <button onclick="stringifyJSON()">Stringify JSON</button>
-    <button onclick="parseJSON()">Parse JSON</button>
-    <button onclick="fetchJSON()">Fetch JSON</button>
-    <button onclick="storeJSON()">Store in LocalStorage</button>
-    <button onclick="retrieveJSON()">Retrieve from LocalStorage</button>
-    <div id="output"></div>
+    <div class="container mt-4">
+        <header class="text-center mb-5">
+            <h1 class="text-primary fw-bolder">🍔 Fresh Burger Kiosk</h1>
+            <p class="text-muted fs-5">Built fresh to order!</p>
+        </header>
 
-    <script>
-        let jsonData = null;
-        let jsonString = null;
+        <main class="row">
+            <div id="app-view" class="col-md-8"></div>
+            
+            <aside id="order-summary" class="col-md-4"></aside>
+    </main>
+        
+    </div>
 
-        function createJSON() {
-            jsonData = { name: "Burger", type: "Fast Food", price: 5.99 };
-            document.getElementById('output').innerText = 'JSON Object Created: ' + JSON.stringify(jsonData);
-        }
-
-        function stringifyJSON() {
-            if (jsonData) {
-                jsonString = JSON.stringify(jsonData);
-                document.getElementById('output').innerText = 'Stringified JSON: ' + jsonString;
-            } else {
-                document.getElementById('output').innerText = 'Create JSON first.';
-            }
-        }
-
-        function parseJSON() {
-            if (jsonString) {
-                let parsed = JSON.parse(jsonString);
-                document.getElementById('output').innerText = 'Parsed JSON: ' + JSON.stringify(parsed);
-            } else {
-                document.getElementById('output').innerText = 'Stringify JSON first.';
-            }
-        }
-
-        function fetchJSON() {
-            fetch('https://jsonplaceholder.typicode.com/DarajahH/Burger-Database')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('output').innerText = 'Fetched JSON: ' + JSON.stringify(data);
-                })
-                .catch(error => {
-                    document.getElementById('output').innerText = 'Error fetching JSON: ' + error;
-                });
-        }
-
-        function storeJSON() {
-            if (jsonData) {
-                localStorage.setItem('burgerData', JSON.stringify(jsonData));
-                document.getElementById('output').innerText = 'JSON stored in LocalStorage.';
-            } else {
-                document.getElementById('output').innerText = 'Create JSON first.';
-            }
-        }
-
-        function retrieveJSON() {
-            let stored = localStorage.getItem('burgerData');
-            if (stored) {
-                let retrieved = JSON.parse(stored);
-                document.getElementById('output').innerText = 'Retrieved JSON: ' + JSON.stringify(retrieved);
-            } else {
-                document.getElementById('output').innerText = 'No JSON in LocalStorage.';
-            }
-        }
+    <script id="home-template" type="text/x-handlebars-template">
+        <div class="card p-5 text-center shadow-sm">
+            <h3 class="mb-3">Welcome!!</h3>
+            <p class="text-muted mb-4">We're excited to feed you. What name should we call out when your food is ready?</p>
+            <input type="text" id="user-name-input" class="form-control w-10 mx-auto mb-3 text-center fs-4" placeholder="Enter your name">
+            <button id="start-btn" class="btn btn-primary btn-lg px-5">Ready!</button>
+        </div>
     </script>
+    <script id="burger-select-template" type="text/x-handlebars-template">
+        <div class="card p-2 text-center shadow-sm">
+            <h3 class="mb-4">Pick your Base.</h3>
+            <div class="row mt-3 justify-content-center">
+                {{#each burgers}}
+                <div class="col-md-5 mb-4 d-flex justify-content-center">
+                    <div class="card circle-card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{this.title}}</h5>
+                            <button class="btn btn-primary select-burger-btn mt-3 px-4" data-id="{{this.id}}">Beef or Chicken?</button>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </script>
+
+    <script id="step-multiple-choice-template" type="text/x-handlebars-template">
+        <div class="card p-5 text-center shadow-sm">
+            <h4 class="mb-4">{{instruction}}</h4>
+            <div class="mt-3 d-flex flex-wrap justify-content-center">
+                {{#each options}}
+                <button class="btn btn-outline-secondary choice-btn m-2 fs-5 d-flex align-items-center" data-value="{{this.name}}">
+                    {{#if this.img}}
+                        <img src="{{this.img}}" alt="{{this.name}}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px; margin-right: 12px;">
+                    {{/if}} 
+                    <span>{{this.name}}</span>
+                </button>
+                {{/each}}
+            </div>
+            <div class="mt-4">
+                <button class="btn btn-link text-muted text-decoration-none skip-btn">I'm good, skip this.</button>
+            </div>
+            <div id="confirmation-msg" class="mt-3 text-success fs-5 fw-bold"></div>
+        </div>
+    </script>
+
+    <script id="step-text-template" type="text/x-handlebars-template">
+        <div class="card p-5 text-center shadow-sm">
+            <h4 class="mb-4">{{instruction}}</h4>
+            <input type="number" id="text-step-input" class="form-control w-25 mx-auto mt-3 text-center fs-4" min="0" max="5" placeholder="#">
+            <button id="submit-text-btn" class="btn btn-primary mt-4 px-5">Add it on</button>
+            <div class="mt-4">
+                <button class="btn btn-link text-muted text-decoration-none skip-btn">No thanks, skip this.</button>
+            </div>
+            <div id="confirmation-msg" class="mt-3 text-success fs-5 fw-bold"></div>
+        </div>
+    </script>
+
+    <script id="step-image-template" type="text/x-handlebars-template">
+        <div class="card p-5 text-center shadow-sm">
+            <h4 class="mb-4">{{instruction}}</h4>
+            <div class="image-options d-flex justify-content-center gap-4 mt-3">
+                {{#each options}}
+                <div class="cursor-pointer image-btn" data-value="{{this.label}}">
+                    <img src="{{this.img}}" alt="{{this.label}}" class="shadow-sm" style="width: 160px; height: 160px; object-fit: cover; border-radius: 16px;">
+                    <p class="mt-3 fs-5 fw-semibold">{{this.label}}</p>
+                </div>
+                {{/each}}
+            </div>
+            <div class="mt-4">
+                <button class="btn btn-link text-muted text-decoration-none skip-btn">Doesn't matter to me.</button>
+            </div>
+            <div id="confirmation-msg" class="mt-3 text-success fs-5 fw-bold"></div>
+        </div>
+    </script>
+
+    <script id="feedback-template" type="text/x-handlebars-template">
+        <div class="card p-5 text-center shadow-sm" style="background-color: #d1ccbb; border: 2px solid #ffecb5; border-radius: 16px;">
+            <h4 class="text-warning-emphasis mb-3">Hold up a second!</h4>
+            <p class="fs-5 text-dark">{{message}}</p>
+            <button id="got-it-btn" class="btn btn-dark mt-4 px-5 btn-lg">Got it, my bad!</button>
+        </div>
+    </script>
+
+    <script id="final-template" type="text/x-handlebars-template">
+        <div class="card p-5 text-center shadow-sm">
+            <h3 class="mb-4">{{message}}</h3>
+            <p class="text-muted mb-4">We'll call your name soon.</p>
+            <button id="restart-btn" class="btn btn-primary mt-2 px-5 btn-lg">Start a New Order</button>
+        </div>
+    </script>
+
+    <script id="summary-template" type="text/x-handlebars-template">
+        <div class="card p-4 shadow-sm" style="border-top: 6px solid #7e590b; border-radius: 12px;">
+            <h4 class="border-bottom pb-3 mb-3 fw-bold text-uppercase" style="letter-spacing: 1px;">Your Order</h4>
+            <p class="mb-2 text-muted"><strong>Name:</strong> <span class="text-dark">{{name}}</span></p>
+            <p class="mb-3 text-muted"><strong>Base:</strong> <span class="text-dark">{{burgerName}}</span></p>
+            
+            <h6 class="mt-4 text-uppercase text-muted" style="font-size: 0.85rem; letter-spacing: 1px;">The Details</h6>
+            <ul class="list-unstyled mb-0">
+                {{#each selections}}
+                <li class="py-2" style="border-bottom: 1px dashed #dda4a4;">
+                    <span class="text-muted">{{@key}}:</span> <strong class="float-end">{{this}}</strong>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </script>
+
+    <script type="module" src="src/js/app.js"></script>
+    <script type="module" src="src/js/controller.js"></script>
+    <script type="module" src="src/js/model.js"></script>
+    <script type="module" src="src/js/view.js"></script>
+
 </body>
 </html>
