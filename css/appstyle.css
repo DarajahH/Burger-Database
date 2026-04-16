@@ -1,0 +1,64 @@
+/* Include any custom CSS for your application here */
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+}
+
+.card {
+    margin: 10px;
+}
+
+/* Custom Circle Card for Burger Selection */
+.circle-card {
+    border-radius: 50% !important; /* Forces the circle shape */
+    width: 220px; /* Fixed width */
+    height: 220px; 
+    margin: 0 auto; /* Centers the circle in its column */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; 
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+    border: 3px solid #0d6efd; 
+    background-color: #e66a6a;
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSCnOekMFMgHtfrsL52ItCflEw2eRWMhAk1A&s');
+}
+
+.circle-card:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+}
+
+.circle-card .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Interactive Image Selection Styles */
+.image-options {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.cursor-pointer img {
+    transition: all 0.2s ease-in-out;
+    border: 2px solid transparent; /* Prevents layout shift on hover */
+}
+
+.cursor-pointer img:hover {
+    border: 2px solid #0d6efd; /* Highlights image in blue */
+    transform: scale(1.05);
+}
